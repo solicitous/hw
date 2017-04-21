@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yscredit.pgp.mybatis.dao.DataInvalidStatisticMapper">
+	<resultMap id="BaseResultMap"
+		type="com.yscredit.pgp.mybatis.model.DataInvalidStatistic">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="DEPT_CODE" property="deptCode" jdbcType="INTEGER" />
+		<result column="TABLE_ID" property="tableId" jdbcType="INTEGER" />
+		<result column="INVALID_TYPE" property="invalidType" jdbcType="INTEGER" />
+		<result column="INVALID_RATE" property="invalidRate" jdbcType="INTEGER" />
+		<result column="INVALID_NUMBER" property="invalidNumber"
+			jdbcType="INTEGER" />
+		<result column="TOTAL_NUMBER" property="totalNumber" jdbcType="INTEGER" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, DEPT_CODE, TABLE_ID, INVALID_TYPE, INVALID_RATE,
+		INVALID_NUMBER,
+		TOTAL_NUMBER,
+		CREATE_DATE
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from data_invalid_statistic
+		where ID = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		data_invalid_statistic
+		where ID = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.yscredit.pgp.mybatis.model.DataInvalidStatistic">
+		insert into
+		data_invalid_statistic (ID, DEPT_CODE, TABLE_ID,
+		INVALID_TYPE,
+		INVALID_RATE, INVALID_NUMBER,
+		TOTAL_NUMBER, CREATE_DATE)
+		values
+		(#{id,jdbcType=INTEGER}, #{deptCode,jdbcType=INTEGER},
+		#{tableId,jdbcType=INTEGER},
+		#{invalidType,jdbcType=INTEGER},
+		#{invalidRate,jdbcType=INTEGER}, #{invalidNumber,jdbcType=INTEGER},
+		#{totalNumber,jdbcType=INTEGER}, #{createDate,jdbcType=DATE})
+	</insert>
+	<insert id="insertSelective" parameterType="com.yscredit.pgp.mybatis.model.DataInvalidStatistic">
+		insert into data_invalid_statistic
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="deptCode != null">
+				DEPT_CODE,
+			</if>
+			<if test="tableId != null">
+				TABLE_ID,
+			</if>
+			<if test="invalidType != null">
+				INVALID_TYPE,
+			</if>
+			<if test="invalidRate != null">
+				INVALID_RATE,
+			</if>
+			<if test="invalidNumber != null">
+				INVALID_NUMBER,
+			</if>
+			<if test="totalNumber != null">
+				TOTAL_NUMBER,
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="deptCode != null">
+				#{deptCode,jdbcType=INTEGER},
+			</if>
+			<if test="tableId != null">
+				#{tableId,jdbcType=INTEGER},
+			</if>
+			<if test="invalidType != null">
+				#{invalidType,jdbcType=INTEGER},
+			</if>
+			<if test="invalidRate != null">
+				#{invalidRate,jdbcType=INTEGER},
+			</if>
+			<if test="invalidNumber != null">
+				#{invalidNumber,jdbcType=INTEGER},
+			</if>
+			<if test="totalNumber != null">
+				#{totalNumber,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.yscredit.pgp.mybatis.model.DataInvalidStatistic">
+		update data_invalid_statistic
+		<set>
+			<if test="deptCode != null">
+				DEPT_CODE = #{deptCode,jdbcType=INTEGER},
+			</if>
+			<if test="tableId != null">
+				TABLE_ID = #{tableId,jdbcType=INTEGER},
+			</if>
+			<if test="invalidType != null">
+				INVALID_TYPE = #{invalidType,jdbcType=INTEGER},
+			</if>
+			<if test="invalidRate != null">
+				INVALID_RATE = #{invalidRate,jdbcType=INTEGER},
+			</if>
+			<if test="invalidNumber != null">
+				INVALID_NUMBER = #{invalidNumber,jdbcType=INTEGER},
+			</if>
+			<if test="totalNumber != null">
+				TOTAL_NUMBER = #{totalNumber,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate,jdbcType=DATE},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.yscredit.pgp.mybatis.model.DataInvalidStatistic">
+		update
+		data_invalid_statistic
+		set DEPT_CODE = #{deptCode,jdbcType=INTEGER},
+		TABLE_ID = #{tableId,jdbcType=INTEGER},
+		INVALID_TYPE =
+		#{invalidType,jdbcType=INTEGER},
+		INVALID_RATE =
+		#{invalidRate,jdbcType=INTEGER},
+		INVALID_NUMBER =
+		#{invalidNumber,jdbcType=INTEGER},
+		TOTAL_NUMBER =
+		#{totalNumber,jdbcType=INTEGER},
+		CREATE_DATE =
+		#{createDate,jdbcType=DATE}
+		where ID = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="listTopInvalidByDeptCode" resultMap="BaseResultMap" >
+		select DEPT_CODE, TABLE_ID, INVALID_TYPE, INVALID_RATE
+		from data_invalid_statistic
+		<where>
+			<if test="deptCode != 0">
+				DEPT_CODE = #{deptCode} and
+			</if>
+			CREATE_DATE = NOW()
+		</where>
+		order by INVALID_RATE desc limit ${limit}
+	</select>
+</mapper>
